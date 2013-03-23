@@ -1,13 +1,56 @@
-#
-# Executes commands at the start of an interactive session.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
+# Disable user autocomplete-- slow with NFS
+zstyle ':completion:*' users
 
-# Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+# Allow '#' comments in prompt
+setopt interactivecomments
 
-# Customize to your needs...
+# load my functions and completions
+fpath=(~/.zprezto/functions $fpath)
+autoload -U ~/.zprezto/functions/*(:t)
+fpath=(~/.zprezto/completion $fpath)
+autoload -U ~/.zprezto/completion/*(:t)
+
+# Custom Autocompletions
+# TODO: Where to keep this?
+compdef _goenv goenv
+
+# Aliases
+alias emacs='emacs -nw'
+alias l='ls -lFh'
+alias la='ls -lAFh'
+alias lr='ls -tRFh'
+alias ll='ls -l'
+alias zshrc='$EDITOR ~/.zshrc'
+alias grep='grep --color'
+alias ps="ps -ef"
+alias godeps="go list -f '{{ join .Deps  \"\n\"}}' ."
+alias g="git"
+alias k="kubectl"
+alias e="ETCDCTL_API=3 etcdctl"
+
+# GVM
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
+# Prezto
+[[ -s "$HOME/.zprezto/init.zsh" ]] && source "$HOME/.zprezto/init.zsh"
+
+# Solarized
+[[ -s "$HOME/.dir_colors/dircolors" ]] && eval `dircolors $HOME/.dir_colors/dircolors`
+
+# GPG
+export GPG_TTY=$(tty)
+
+# Load my profile.
+source ~/.zprofile
+
+# Loca my gitignored machine local zshrc
+[[ -s "$HOME/.zshrc-local" ]] && source "$HOME/.zshrc-local"
+
+# Powerlevel9k Customizations
+powerlevel_setup
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/usr/local/google/home/jpbetz/google-cloud-sdk/path.zsh.inc' ]; then source '/usr/local/google/home/jpbetz/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/usr/local/google/home/jpbetz/google-cloud-sdk/completion.zsh.inc' ]; then source '/usr/local/google/home/jpbetz/google-cloud-sdk/completion.zsh.inc'; fi

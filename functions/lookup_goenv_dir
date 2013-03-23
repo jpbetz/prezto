@@ -1,0 +1,8 @@
+lookup_goenv_dir() {
+  if [ "$GOPATH" ]; then
+    local goenv=$GOPATH/.goenv
+    if [ -s "$goenv" ]; then
+      echo "$GOPATH"
+    fi
+  fi
+}
