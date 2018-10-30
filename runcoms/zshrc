@@ -10,10 +10,6 @@ autoload -U ~/.zprezto/functions/*(:t)
 fpath=(~/.zprezto/completion $fpath)
 autoload -U ~/.zprezto/completion/*(:t)
 
-# Custom Autocompletions
-# TODO: Where to keep this?
-compdef _goenv goenv
-
 # Aliases
 alias emacs='emacs -nw'
 alias l='ls -lFh'
@@ -34,8 +30,12 @@ alias e="ETCDCTL_API=3 etcdctl"
 # Prezto
 [[ -s "$HOME/.zprezto/init.zsh" ]] && source "$HOME/.zprezto/init.zsh"
 
-# Solarized
+# Dircolors
 [[ -s "$HOME/.dir_colors/dircolors" ]] && eval `dircolors $HOME/.dir_colors/dircolors`
+
+# Custom Autocompletions
+# TODO: Where to keep this?
+compdef _goenv goenv
 
 # GPG
 export GPG_TTY=$(tty)
