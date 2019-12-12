@@ -28,7 +28,6 @@ zstyle ':prezto:*:*' color 'yes'
 # The order matters.
 zstyle ':prezto:load' pmodule \
   'environment' \
-  'python' \
   'terminal' \
   'editor' \
   'history' \
@@ -52,6 +51,8 @@ zstyle ':prezto:load' pmodule \
 # Set the entries to ignore in static */etc/hosts* for host completion.
 # zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
 #   '0.0.0.0' '127.0.0.1'
+
+zstyle ':completion:*' users
 
 #
 # Editor
@@ -159,7 +160,7 @@ zstyle ':prezto:module:prompt' theme 'powerlevel9k'
 #
 
 # Set the SSH identities to load into the agent.
-# zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa2' 'id_github'
+zstyle ':prezto:module:ssh:load' identities 'github_id_rsa' 'google_compute_engine'
 
 #
 # Syntax Highlighting

@@ -3,8 +3,9 @@ powerlevel_setup() {
   # https://github.com/ryanoasis/nerd-fonts#option-1-install-script
   POWERLEVEL9K_MODE='nerdfont-fontconfig'
 
+  # see ~/bin/nord.sh for list of colors
   POWERLEVEL9K_CUSTOM_GOENV="prompt_goenv"
-  POWERLEVEL9K_CUSTOM_GOENV_BACKGROUND='yellow'
+  POWERLEVEL9K_CUSTOM_GOENV_BACKGROUND='blue'
   POWERLEVEL9K_CUSTOM_GOENV_FOREGROUND='black'
   POWERLEVEL9K_CUSTOM_GOENV_ALERT_FOREGROUND='red'
 

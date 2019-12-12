@@ -1,5 +1,8 @@
+# Uncomment to enable profiling (run "zprof" on the cmdline to profile)
+# zmodload zsh/zprof
+
 # Disable user autocomplete-- slow with NFS
-zstyle ':completion:*' users
+zstyle ':completion:*' ''
 
 # Allow '#' comments in prompt
 setopt interactivecomments
@@ -9,6 +12,9 @@ fpath=(~/.zprezto/functions $fpath)
 autoload -U ~/.zprezto/functions/*(:t)
 fpath=(~/.zprezto/completion $fpath)
 autoload -U ~/.zprezto/completion/*(:t)
+
+# Custom Autocompletions
+compdef _goenv goenv
 
 # Aliases
 alias emacs='emacs -nw'
@@ -23,6 +29,17 @@ alias godeps="go list -f '{{ join .Deps  \"\n\"}}' ."
 alias g="git"
 alias k="kubectl"
 alias e="ETCDCTL_API=3 etcdctl"
+
+# Tmux
+# Start tmux automatically
+if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+  tmux attach-session -t dev || tmux new-session -s dev
+fi
+alias dev='tmux attach-session -t dev || tmux new-session -s dev'
+
+fixssh() {
+  ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+}
 
 # GVM
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
@@ -54,3 +71,7 @@ if [ -f '/usr/local/google/home/jpbetz/google-cloud-sdk/path.zsh.inc' ]; then so
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/usr/local/google/home/jpbetz/google-cloud-sdk/completion.zsh.inc' ]; then source '/usr/local/google/home/jpbetz/google-cloud-sdk/completion.zsh.inc'; fi
+
+export PATH="$HOME/bin/protobuf/3.6.0/bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

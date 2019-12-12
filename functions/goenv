@@ -10,42 +10,54 @@ goenv() {
       echo "No .goenv file found in $PROJECT_DIR/$1 directory"
       return 1
     fi
-    local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)
+    local module_dir=$(jq -r .project $env_dir/.goenv)
+    local project_dir=$env_dir
+    if [ "$module_dir" != "null" ]; then
+      project_dir="$env_dir/src/$module_dir"
+    fi
+    
     local gvm=$(jq -r .gvm $env_dir/.goenv)
     gvm use $gvm > /dev/null
     if [ $? -ne 0 ]; then
       echo "gvm use ${gvm} failed."
       return 1
     fi
-
-    local gcloud_config=$(jq -r .gcloud.config $env_dir/.goenv)
-    if [ "$gcloud_config" != "null" ]; then
-      gcloud config configurations activate ${gcloud_config} &> /dev/null
-      if [ $? != 0 ]; then
-        echo "failed to activate '${gcloud_config}' gcloud config configuration."
-        return 1
-      fi
-    fi
-    local project_id=$(jq -r .gcloud.PROJECT_ID $env_dir/.goenv)
-    if [ "$project_id" != "null" ]; then
-      export PROJECT_ID="$project_id"
-      gcloud config set project $PROJECT_ID &> /dev/null
-      if [ $? != 0 ]; then
-        echo "failed to set gcloud project to '${PROJECT_ID}'."
-        return 1
-      fi
+    local gomodules=$(jq -r .go.modules $env_dir/.goenv)
+    if [ "$gomodules" != "null" ]; then
+      export GO111MODULE=$gomodules
     fi
 
-    local kube_context=$(jq -r .kube.context $env_dir/.goenv)
-    if [ "$kube_context" != "null" ]; then
-      alias kubectl=$project_dir/cluster/kubectl.sh
-      $project_dir/cluster/kubectl.sh config set-context $kube_context &> /dev/null
-      if [ $? != 0 ]; then
-        echo "WARN: failed to activate '${kube_context}' kubectl config context."
-      fi
-    fi
+#    local gcloud_config=$(jq -r .gcloud.config $env_dir/.goenv)
+#    if [ "$gcloud_config" != "null" ]; then
+#      gcloud config configurations activate ${gcloud_config} &> /dev/null
+#      if [ $? != 0 ]; then
+#        echo "failed to activate '${gcloud_config}' gcloud config configuration."
+#        return 1
+#      fi
+#    fi
+#    local project_id=$(jq -r .gcloud.PROJECT_ID $env_dir/.goenv)
+#    if [ "$project_id" != "null" ]; then
+#      export PROJECT_ID="$project_id"
+#      gcloud config set project $PROJECT_ID &> /dev/null
+#      if [ $? != 0 ]; then
+#        echo "failed to set gcloud project to '${PROJECT_ID}'."
+#        return 1
+#      fi
+#    fi
+#
+#    local kube_context=$(jq -r .kube.context $env_dir/.goenv)
+#    if [ "$kube_context" != "null" ]; then
+#      alias kubectl=$project_dir/cluster/kubectl.sh
+#      $project_dir/cluster/kubectl.sh config set-context $kube_context &> /dev/null
+#      if [ $? != 0 ]; then
+#        echo "WARN: failed to activate '${kube_context}' kubectl config context."
+#      fi
+#    fi
 
-    export GOPATH=$env_dir
+    if [ "$gomodules" != "on" ]; then
+      export GOPATH=$env_dir
+    fi
+    
     # Remove previous GOENV_BIN_PATH
     if [ $GOENV_BIN_PATH ]; then
       export PATH=${PATH//:$GOENV_BIN_PATH/}
@@ -59,17 +71,22 @@ goenv() {
 
   local env_dir=$(lookup_goenv_dir)
   if [ $env_dir ]; then
-      local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)
+      local module_dir=$(jq -r .project $env_dir/.goenv)
+      local project_dir=$env_dir
+      if [ "$module_dir" != "null" ]; then
+        project_dir="$env_dir/src/$module_dir"
+      fi
       echo "${GOENV_NAME} (${env_dir})"
-      echo "project: ${project_dir}"
+      echo "working directory: ${project_dir}"
       echo "golang:"
       echo "\texecutable: ${$(which go)}"
       echo "\tversion: ${$(go version)}"
       echo "\tGOPATH: ${GOPATH}"
       echo "\tGOROOT: ${GOROOT}"
-      echo "gcloud active config:"
-      gcloud config configurations list --filter IS_ACTIVE=True | awk '{ print "\t" $0 }'
-      echo "kube context:"
-      $project_dir/cluster/kubectl.sh config current-context | awk '{ print "\t" $0 }'
+      echo "\tGO111MODULE: ${GO111MODULE}"
+      #echo "gcloud active config:"
+      #gcloud config configurations list --filter IS_ACTIVE=True | awk '{ print "\t" $0 }'
+      #echo "kube context:"
+      #$project_dir/cluster/kubectl.sh config current-context | awk '{ print "\t" $0 }'
   fi
 }

@@ -48,7 +48,8 @@ fi
 # Paths
 #
 
-typeset -gU cdpath fpath mailpath path
+#typeset -gU cdpath fpath mailpath path
+typeset -gU cdpath fpath path
 
 # Set the the list of directories that cd searches.
 # cdpath=(
