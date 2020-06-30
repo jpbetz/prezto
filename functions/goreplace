@@ -1,0 +1,11 @@
+goreplace() {
+  local local_branch=$(git name-rev --name-only HEAD)
+  local tracking_branch=$(git config "branch.${local_branch}.merge")
+  local tracking_remote=$(git config "branch.${local_branch}.remote")
+  local commit_hash=$(git rev-parse --short=12 HEAD)
+  local commit_date=$(date -u -d @$(git show -s --format=%ct "${commit_hash}") +'%Y%m%d%H%M%S')
+  echo "replace ("
+  echo "\t??? => ??? v0.0.0-${commit_date}-${commit_hash} // unversioned"
+  echo "\t???/v3 => ???/v3 v3.0.0-${commit_date}-${commit_hash} // versioned"
+  echo ")"
+}

@@ -13,9 +13,6 @@ autoload -U ~/.zprezto/functions/*(:t)
 fpath=(~/.zprezto/completion $fpath)
 autoload -U ~/.zprezto/completion/*(:t)
 
-# Custom Autocompletions
-compdef _goenv goenv
-
 # Aliases
 alias emacs='emacs -nw'
 alias l='ls -lFh'
