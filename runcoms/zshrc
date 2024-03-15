@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Uncomment to enable profiling (run "zprof" on the cmdline to profile)
 # zmodload zsh/zprof
 
@@ -10,8 +17,8 @@ setopt interactivecomments
 # load my functions and completions
 fpath=(~/.zprezto/functions $fpath)
 autoload -U ~/.zprezto/functions/*(:t)
-fpath=(~/.zprezto/completion $fpath)
-autoload -U ~/.zprezto/completion/*(:t)
+#fpath=(~/.zprezto/completion $fpath)
+#autoload -U ~/.zprezto/completion/*(:t)
 
 # Aliases
 alias emacs='emacs -nw'
@@ -29,14 +36,14 @@ alias e="ETCDCTL_API=3 etcdctl"
 
 # Tmux
 # Start tmux automatically
-if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-  tmux attach-session -t dev || tmux new-session -s dev
-fi
-alias dev='tmux attach-session -t dev || tmux new-session -s dev'
+#if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+#  tmux attach-session -t dev || tmux new-session -s dev
+#fi
+#alias dev='tmux attach-session -t dev || tmux new-session -s dev'
 
-fixssh() {
-  ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
-}
+#fixssh() {
+#  ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+#}
 
 # GVM
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
@@ -47,10 +54,6 @@ fixssh() {
 # Dircolors
 [[ -s "$HOME/.dir_colors/dircolors" ]] && eval `dircolors $HOME/.dir_colors/dircolors`
 
-# Custom Autocompletions
-# TODO: Where to keep this?
-compdef _goenv goenv
-
 # GPG
 export GPG_TTY=$(tty)
 
@@ -59,9 +62,6 @@ source ~/.zprofile
 
 # Loca my gitignored machine local zshrc
 [[ -s "$HOME/.zshrc-local" ]] && source "$HOME/.zshrc-local"
-
-# Powerlevel9k Customizations
-powerlevel_setup
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/google/home/jpbetz/google-cloud-sdk/path.zsh.inc' ]; then source '/usr/local/google/home/jpbetz/google-cloud-sdk/path.zsh.inc'; fi
@@ -72,3 +72,9 @@ if [ -f '/usr/local/google/home/jpbetz/google-cloud-sdk/completion.zsh.inc' ]; t
 export PATH="$HOME/bin/protobuf/3.6.0/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# Powerlevel10k
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

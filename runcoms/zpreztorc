@@ -52,7 +52,7 @@ zstyle ':prezto:load' pmodule \
 # zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
 #   '0.0.0.0' '127.0.0.1'
 
-zstyle ':completion:*' users
+ zstyle ':completion:*' users
 
 #
 # Editor
@@ -117,7 +117,8 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 # Auto set to 'off' on dumb terminals.
 # zstyle ':prezto:module:prompt' theme 'minimal'
 # https://github.com/bhilburn/powerlevel9k
-zstyle ':prezto:module:prompt' theme 'powerlevel9k'
+#zstyle ':prezto:module:prompt' theme 'powerlevel9k'
+#zstyle :prezto:module:prompt theme powerlevel10k
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)

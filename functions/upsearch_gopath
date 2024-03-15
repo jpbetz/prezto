@@ -1,5 +1,0 @@
-upsearch_gopath() {
-  pushd "$GOPATH" > /dev/null
-  upsearch ".goenv"
-  popd > /dev/null
-}

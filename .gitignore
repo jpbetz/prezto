@@ -3,5 +3,4 @@
 modules/*/cache.zsh
 contrib
 runcoms/local-zshrc
-.goenv
 .idea
