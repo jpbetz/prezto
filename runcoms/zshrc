@@ -26,7 +26,5 @@ alias emacs='emacs -nw'
 alias g='git'
 alias k='kubectl'
 
-# [[ -s "/home/jpbetz/.gvm/scripts/gvm" ]] && source "/home/jpbetz/.gvm/scripts/gvm"
-
 # GVM
-source /home/jpbetz/.gvm/scripts/gvm
+# [[ -s "${HOME}/.gvm/scripts/gvm" ]] && source "${HOME}/.gvm/scripts/gvm"
